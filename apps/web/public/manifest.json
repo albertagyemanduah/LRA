@@ -1,0 +1,85 @@
+{
+  "name": "Techiman North Land Registry",
+  "short_name": "Land Registry",
+  "description": "Land registration and management system for Techiman North District Assembly",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#163a5f",
+  "background_color": "#163a5f",
+  "lang": "en",
+  "categories": ["government", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assembly-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Register Land",
+      "short_name": "Register",
+      "description": "Register a new land parcel",
+      "url": "/app/parcels",
+      "icons": [{ "src": "/assembly-logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Search Land",
+      "short_name": "Search",
+      "description": "Search for land records",
+      "url": "/app/search",
+      "icons": [{ "src": "/assembly-logo.png", "sizes": "96x96" }]
+    }
+  ]
+}

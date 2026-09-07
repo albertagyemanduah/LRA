@@ -1,0 +1,71 @@
+version: "3.9"
+
+# ============================================================
+# Techiman North Land Registry — Docker Compose
+# Usage: docker compose up -d
+# ============================================================
+
+services:
+  # ---- PocketBase (database + auth + file storage) ----
+  pocketbase:
+    image: node:22-alpine
+    working_dir: /app/apps/pocketbase
+    command: ./pocketbase serve --http=0.0.0.0:8090 --encryptionEnv=PB_ENCRYPTION_KEY --hooksWatch=false
+    volumes:
+      - ./apps/pocketbase:/app/apps/pocketbase
+      - pb_data:/app/apps/pocketbase/pb_data
+    env_file: .env
+    environment:
+      - PB_ENCRYPTION_KEY=${PB_ENCRYPTION_KEY}
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8090/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ---- Express API ----
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3001
+      - PB_URL=http://pocketbase:8090
+    ports:
+      - "3001:3001"
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    volumes:
+      - logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ---- Nginx reverse proxy + static file server ----
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./apps/web/dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+      - pocketbase
+    restart: unless-stopped
+
+volumes:
+  pb_data:
+  logs:
