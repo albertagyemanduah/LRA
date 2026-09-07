@@ -10,10 +10,12 @@
     "lint": "concurrently --raw \"npm run lint --prefix apps/web\" \"npm run lint --prefix apps/api\""
   },
   "devDependencies": {
-    "concurrently": "^10.0.4",
     "knip": "^6.32.1"
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "dependencies": {
+    "concurrently": "^10.0.4"
+  }
 }
