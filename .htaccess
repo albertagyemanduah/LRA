@@ -1,0 +1,45 @@
+# ============================================================
+# Land Registry — front controller routing (XAMPP / cPanel)
+# ============================================================
+
+Options -Indexes
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Pass the Authorization header through to PHP (FastCGI strips it).
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # /api/* and /uploads/* are real folders — never rewrite them.
+    RewriteRule ^api(/|$) - [L]
+    RewriteRule ^uploads(/|$) - [L]
+
+    # Existing files and directories are served as-is
+    # (app/assets, favicon, robots.txt, the legacy React build, ...).
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes to the PHP front controller.
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Keep source, config and tooling out of the browser.
+<FilesMatch "(^\.|\.(env|sql|md|json|lock|cjs|mjs|sh|ya?ml|tar\.gz|dist)$|^(package|composer|ecosystem))">
+    Require all denied
+</FilesMatch>
+<Files "index.php">
+    Require all granted
+</Files>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
