@@ -1,0 +1,4 @@
+# Uploaded files are runtime data — keep the folder and its .htaccess, ignore the rest.
+*
+!.gitignore
+!.htaccess

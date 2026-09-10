@@ -1,0 +1,3 @@
+# Runtime storage (dev mail spool, caches). Keep the folder, ignore contents.
+*
+!.gitignore
